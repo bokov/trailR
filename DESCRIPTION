@@ -1,0 +1,24 @@
+Package: trailR
+Type: Package
+Title: Light-weight audit-trail capability
+Version: 0.1.0
+Author: Alex F. Bokov, Jonathan A. Gelfond
+Maintainer: Alex F. Bokov <bokov@uthscsa.edu>
+Description: A small set of utilities that can wrap most things that can enter 
+    (via tread() and tload()) or leave (via tsave()) your script and log them 
+    with hashes and timestamps. Instead of the overhead and complexity of 
+    logging everything your scripts do, this packages assumes you are already 
+    using version control on your scripts so the only thing that needs to be 
+    logged is which data files are being read by which version of your script. 
+    If you have an exact match on your data and your script it should be 
+    possible to reproduce any results you got at an earlier point in time. 
+    Random numbers can be an issue and that is what the tseed() function is for.
+    None of this works for interactive sessions, because by definition 
+    interactive sessions are not reproducible research. The role of an 
+    interactive session is to design and test your data analysis process, which 
+    you then save as a script and publish only the output from that script.
+License: MIT
+Encoding: UTF-8
+LazyData: true
+Imports: Rcpp (>= 0.12.15)
+LinkingTo: Rcpp
