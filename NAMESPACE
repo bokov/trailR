@@ -2,3 +2,9 @@
 
 export(fingerprint)
 export(gitstamp)
+export(tload)
+export(tread)
+export(tsave)
+export(tseed)
+export(tself)
+export(walktrail)

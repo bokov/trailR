@@ -118,8 +118,9 @@ gitstamp <- function(production=T,branch=T) {
   } else return(c(br,'TEST_OUTPUT_DO_NOT_USE'));
 }
 
-# this creates a trail object if there isn't already one and either way
-# returns a trail object
+#' this creates a trail object if there isn't already one and either way
+#' returns a trail object
+#'
 tinit <- function(trail=getOption('trail'),...){
   if(is.null(trail)) {
     trail<-data.frame(sequence=sprintf('%04d',1),time=Sys.time(),type='info',name='sessionInfo',value=NA,hash=NA,trail=NA,stringsAsFactors=F);
@@ -150,6 +151,8 @@ tupdate <- function(type=NA,name=NA,value=NA,hash=NA,time=Sys.time()
 #' Recursively collect nested trail dataframes and rbind them all together
 #' with a sequence column which will sort them in a way that preserves their
 #' hierarchical relationship
+#'
+#' @export
 walktrail <- function(trail=tinit(),prepend='',seqcol=names(trail)[1]
                       ,nestingcol=tail(names(trail),1),sep='.'){
   fn <- sys.function();
@@ -164,18 +167,22 @@ walktrail <- function(trail=tinit(),prepend='',seqcol=names(trail)[1]
   return(out);
 }
 
+#' Print function for `walktrail()`
+#'
 print.walktrail <- function(xx
                             ,sub=c('sequence','time','type','name_value','hash')
                             ,...){
   sub <- sub[sub %in% c('name_value',names(xx))];
-  mutate(xx
+  transform(xx
          ,name_value=paste(name
                            ,name_value=ifelse(type=='info','...',value),sep='='))[,sub];
 }
 
 summary.walktrail <- print.walktrail;
 
-# script registering itself... adds a gitstamp and its own name to trail
+#' script registering itself... adds a gitstamp and its own name to trail
+#'
+#' @export
 tself <- function(scriptname=parent.frame(2)$ofile
                   ,production=getOption('gitstamp_prod',T)){
   if(is.null(scriptname)) scriptname <- 'INTERACTIVE_SESSION';
@@ -184,6 +191,8 @@ tself <- function(scriptname=parent.frame(2)$ofile
 }
 
 #' setting and recording the random seed
+#'
+#' @export
 tseed <- function(seed,...){
   seedname <- deparse(match.call()$seed);
   set.seed(seed,...);
@@ -192,6 +201,8 @@ tseed <- function(seed,...){
 
 #' loading an rdata file and checking whether it has trail, to include in the
 #' the current trail as a nested data.frame
+#'
+#' @export
 tload <- function(file,envir=parent.frame()
                   ,verbose=FALSE,trailobj='.trail'){
   if(trailobj %in% ls(envir,all=T)) stop(sprintf('
@@ -212,6 +223,8 @@ crashing. Please try again in clean environment.',trailobj));
 #' wrapper for most read functions, and records the file and its hash in trail.
 #' Will eventually also check for accompanying flat-file trail files in JSON
 #' format.
+#'
+#' @export
 tread <- function(file,readfun,...){
   filename <- deparse(match.call()$file);
   filehash <- tools::md5sum(file);
@@ -224,6 +237,8 @@ tread <- function(file,readfun,...){
 #' Wrapper for save(). Pulls trail out of options as a data.frame, saves the
 #' data.frame along with whatever was originally going to be saved, and then
 #' deletes it. Logs the save to itself before saving.
+#'
+#' @export
 tsave <- function(...,list=character(),envir=parent.frame(),trailobj='.trail'
                   ,verbose=TRUE){
   # add another sessionInfo() entry to trail
