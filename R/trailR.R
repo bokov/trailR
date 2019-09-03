@@ -205,9 +205,13 @@ tseed <- function(seed,...){
 #' @export
 tload <- function(file,envir=parent.frame()
                   ,verbose=FALSE,trailobj='.trail'){
-  #if(trailobj %in% ls(envir,all=T)) stop(sprintf('
-#The object %s already exists, perhaps due to one of the trail-related functions
-#crashing. Please try again in clean environment.',trailobj));
+  on.exit(try(rm(list=trailobj,envir=envir),silent = T));
+  if(trailobj %in% ls(envir,all=T)){
+    rm(list=trailobj,envir=envir);
+    if(verbose){
+      warning(sprintf('The object %s already exists, perhaps due to one of the
+trail-related functions crashing. You might want to run this in a clean 
+environment.',trailobj)}};
   filename <- deparse(match.call()$file);
   filehash <- tools::md5sum(file);
   out<-load(file,envir,verbose);
@@ -241,6 +245,7 @@ tread <- function(file,readfun,...){
 #' @export
 tsave <- function(...,list=character(),envir=parent.frame(),trailobj='.trail'
                   ,verbose=TRUE){
+  on.exit(try(rm(list=trailobj,envir=envir),silent = T));
   # add another sessionInfo() entry to trail
   tupdate('info',name='sessionInfo',value=sessionInfo());
   val <- deparse(match.call());
