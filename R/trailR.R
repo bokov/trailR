@@ -205,7 +205,7 @@ tseed <- function(seed,...){
 #' @export
 tload <- function(file,envir=parent.frame()
                   ,verbose=FALSE,trailobj='.trail'){
-  on.exit(try(rm(list=trailobj,envir=envir),silent = T));
+  on.exit(suppressWarnings(try(rm(list=trailobj,envir=envir),silent = T)));
   if(trailobj %in% ls(envir,all=T)){
     rm(list=trailobj,envir=envir);
     if(verbose){
@@ -245,7 +245,7 @@ tread <- function(file,readfun,...){
 #' @export
 tsave <- function(...,list=character(),envir=parent.frame(),trailobj='.trail'
                   ,verbose=TRUE){
-  on.exit(try(rm(list=trailobj,envir=envir),silent = T));
+  on.exit(suppressWarnings(try(rm(list=trailobj,envir=envir),silent = T)));
   # add another sessionInfo() entry to trail
   tupdate('info',name='sessionInfo',value=sessionInfo());
   val <- deparse(match.call());
