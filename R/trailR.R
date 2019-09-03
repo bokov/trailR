@@ -205,7 +205,7 @@ tseed <- function(seed,...){
 #' @export
 tload <- function(file,envir=parent.frame()
                   ,verbose=FALSE,trailobj='.trail'){
-  if(trailobj %in% ls(envir,all=T)) stop(sprintf('
+  #if(trailobj %in% ls(envir,all=T)) stop(sprintf('
 The object %s already exists, perhaps due to one of the trail-related functions
 crashing. Please try again in clean environment.',trailobj));
   filename <- deparse(match.call()$file);
