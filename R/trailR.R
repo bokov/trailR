@@ -211,7 +211,7 @@ tload <- function(file,envir=parent.frame()
     if(verbose){
       warning(sprintf('The object %s already exists, perhaps due to one of the
 trail-related functions crashing. You might want to run this in a clean 
-environment.',trailobj)}};
+environment.',trailobj))}};
   filename <- deparse(match.call()$file);
   filehash <- tools::md5sum(file);
   out<-load(file,envir,verbose);
